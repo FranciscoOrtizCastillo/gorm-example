@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  db:
+    container_name: postgresdbGORM
+    image: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password1234
+      POSTGRES_DB: gormyt_db
+
