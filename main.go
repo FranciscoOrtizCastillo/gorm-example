@@ -4,6 +4,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/FranciscoOrtizCastillo/gorm-example/connection"
 	"github.com/FranciscoOrtizCastillo/gorm-example/models"
@@ -107,7 +108,16 @@ func DeleteProduct(connn *gorm.DB, id string) {
 }
 
 func main() {
-	conn, err := connection.GetConnection("localhost", "postgres", "password1234", "gormyt_db", "5432")
+	//fmt.Println("Initializing DB connection")
+
+	db_host := os.Getenv("DATABASE_HOST")
+	db_port := os.Getenv("DATABASE_PORT")
+	db_user := os.Getenv("POSTGRES_USER")
+	db_pass := os.Getenv("POSTGRES_PASSWORD")
+	db_name := os.Getenv("POSTGRES_DB")
+
+	conn, err := connection.GetConnection(db_host, db_user, db_pass, db_name, db_port)
+
 	errorFatal(err)
 
 	_ = conn

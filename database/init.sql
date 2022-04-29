@@ -6,6 +6,7 @@ create table product
     name varchar(80)   not null,
     price numeric(8, 2) not null
 );
+/*
 create table cliente
 (
     id        serial
@@ -39,3 +40,4 @@ create table detalle_venta
         references producto,
     primary key (venta_id, producto_codigo)
 );
+*/

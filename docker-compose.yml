@@ -1,14 +1,41 @@
 version: "3.8"
-
 services:
-  db:
-    container_name: postgresdbGORM
+  app:
+    container_name: docker-gorm-example
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+      - DATABASE_HOST=${DB_HOST}
+      - DATABASE_PORT=${DB_PORT}
+    tty: true
+    build: .
+    ports:
+      - 8000:8080
+    restart: on-failure
+    volumes:
+      - .:/app
+    depends_on:
+      - postgresdb
+    networks:
+      - learning
+
+  postgresdb:
+    container_name: postgresdb-gorm-example
     image: postgres
     restart: always
     ports:
-      - 5432:5432
+      - ${DB_PORT}:${DB_PORT}
+    networks:
+      - learning
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password1234
-      POSTGRES_DB: gormyt_db
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    volumes: 
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
 
+# Networks to be created to facilitate communication between containers
+networks:
+  learning:
+    driver: bridge
